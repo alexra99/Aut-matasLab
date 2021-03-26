@@ -12,7 +12,7 @@
 
  // Método para realizar una impresión rápida con el formato solicitado
  public void imprimir(String lexema, String token){
-	 System.out.println("Nombre léxico: " + token + " => cadena reconocida: " + lexema + ".");
+	 System.out.printlntoken + " => " + lexema);
  }
 %}
  
@@ -59,7 +59,7 @@
 
 {SaltoDeLinea} {
  ultimaPalabra = yytext();
- imprimir("Enter", "NUEVA_LINEA");
+ imprimir(yytext(), "NUEVA_LINEA");
 }
 
 {Asignacion} {
