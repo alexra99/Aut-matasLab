@@ -2,6 +2,8 @@
 %%
 %public
 %class AnalizadorLexico
+%8bit
+%standalone
 %{
  
  /* Código personalizado */
@@ -9,15 +11,12 @@
  // Se agregó una propiedad para verificar si existen tokens pendientes
  private boolean _existenTokens = false;
  public String ultimaPalabra = "";
- 
- public boolean existenTokens(){
- return this._existenTokens;
+
+ public void imprimir(String lexema, String token){
+	 System.out.println("Nombre léxico: " + token + " => cadena reconocida: " + lexema + ".");
  }
- 
+	
 %}
- 
- /* Al utilizar esta instrucción, se le indica a JFlex que devuelva objetos del tipo TokenPersonalizado */
-%type TokenPersonalizado
  
 %init{
  /* Código que se ejecutará en el constructor de la clase */
@@ -33,12 +32,11 @@
  
 /* Inicio de Expresiones regulares */
  Numero = [0-9]+
- Letra = [A-Za-z]
  Entero = "int"
  Boolean = "boolean"
  Retorno = "return" 
  NoRetorno = "void"
- Variable = {Letra} | {Letra} [a-zA-Z0-9_]+
+ Variable = [a-zA-Z] [a-zA-Z0-9_]*
  SaltoDeLinea = \n|\r|\r\n
  Asignacion = "="
  Puntuacion = ";" | "," |"."
@@ -53,15 +51,11 @@
  Falso = "False" 
  Incremento = {Variable} "++" | {Variable} "+="
  Decremento = {Variable} "--" | {Variable} "-="
- Clase = [A-Z] | [A-Z] {Variable}
- Main = "main()"
+ Main = "main("
  Public = "public"
  Static = "static"
  Class = "class"
  Metodo = {Variable} "("
- 
- 
- 
  
 /* Finaliza expresiones regulares */
  
@@ -74,65 +68,42 @@
  
 {Numero} {
  ultimaPalabra = yytext();
- TokenPersonalizado t = new TokenPersonalizado(yytext(), "NUMERO");
- this._existenTokens = true;
- return t;
-}
-
-{Letra} {
- ultimaPalabra = yytext();
- TokenPersonalizado t = new TokenPersonalizado(yytext(), "LETRA");
- this._existenTokens = true;
- return t;
+ imprimir(yytext(), "NÚMERO");
 }
 
 {SaltoDeLinea} {
  ultimaPalabra = yytext();
- TokenPersonalizado t = new TokenPersonalizado("Enter", "NUEVA_LINEA");
- this._existenTokens = true;
- return t;
+ imprimir("Enter", "NUEVA_LINEA");
 }
 
 {Asignacion} {
  ultimaPalabra = yytext();
- TokenPersonalizado t = new TokenPersonalizado(yytext(),"ASIGNACION");
- this._existenTokens = true;
- return t;
+ imprimir(yytext(),"ASIGNACIÓN");
 }
 
 {Puntuacion} {
  ultimaPalabra = yytext();
- TokenPersonalizado t = new TokenPersonalizado(yytext(),"Puntuacion");
- this._existenTokens = true;
- return t;
+ imprimir(yytext(),"PUNTUACIÓN");
 }
 
 {Bucle} {
  ultimaPalabra = yytext();
- TokenPersonalizado t = new TokenPersonalizado(yytext(),"BUCLE");
- this._existenTokens = true;
- return t;
+ imprimir(yytext(),"BUCLE");
 }
 
 {Aritmetica} {
  ultimaPalabra = yytext();
- TokenPersonalizado t = new TokenPersonalizado(yytext(), "SIMBOLO");
- this._existenTokens = true;
- return t;
+ imprimir(yytext(), "SÍMBOLO");
 }
 
 {Logica} {
  ultimaPalabra = yytext();
- TokenPersonalizado t = new TokenPersonalizado(yytext(), "LOGICA");
- this._existenTokens = true;
- return t;
+ imprimir(yytext(), "LÓGICA");
 }
 
 {Relacional} {
  ultimaPalabra = yytext();
- TokenPersonalizado t = new TokenPersonalizado(yytext(), "RELACIONAL");
- this._existenTokens = true;
- return t;
+ imprimir(yytext(), "RELACIONAL");
 }
 
 {Espacio} {
@@ -144,9 +115,7 @@
  	ultimaPalabra = ultimaPalabra +" "+ yytext();
  }else{
  	ultimaPalabra = yytext();
- 	TokenPersonalizado t = new TokenPersonalizado(yytext(), "ENTERO");
- 	this._existenTokens = true;
- 	return t;
+ 	imprimir(yytext(), "ENTERO");
  }
 }
 
@@ -155,17 +124,13 @@
  	ultimaPalabra = ultimaPalabra +" "+ yytext();
  }else{
  	ultimaPalabra = yytext();
- 	TokenPersonalizado t = new TokenPersonalizado(yytext(), "BOOLEAN");
- 	this._existenTokens = true;
- 	return t;
+ 	imprimir(yytext(), "BOOLEAN");
  }
 }
 
 {Retorno} {
  ultimaPalabra = yytext();
- TokenPersonalizado t = new TokenPersonalizado(yytext(), "RETORNO");
- this._existenTokens = true;
- return t;
+ imprimir(yytext(), "RETORNO");
 }
 
 {NoRetorno} {
@@ -173,9 +138,7 @@
  	ultimaPalabra = ultimaPalabra +" "+ yytext();
  }else{
  	ultimaPalabra = yytext();
- 	TokenPersonalizado t = new TokenPersonalizado(yytext(), "VOID");
- 	this._existenTokens = true;
- 	return t;
+ 	imprimir(yytext(), "VOID");
  }
 }
 
@@ -193,83 +156,55 @@
 
 {Parentesis} {
  ultimaPalabra = yytext();
- TokenPersonalizado t = new TokenPersonalizado(yytext(), "PARENTESIS");
- this._existenTokens = true;
- return t;
+ imprimir(yytext(), "PARENTESIS");
 }
 
 {Llave} {
  ultimaPalabra = yytext();
- TokenPersonalizado t = new TokenPersonalizado(yytext(), "LLAVE");
- this._existenTokens = true;
- return t;
+ imprimir(yytext(), "LLAVE");
 }
 
 {Verdadero} {
  ultimaPalabra = yytext();
- TokenPersonalizado t = new TokenPersonalizado(yytext(), "TRUE");
- this._existenTokens = true;
- return t;
+ imprimir(yytext(), "TRUE");
 }
 
 {Falso} {
  ultimaPalabra = yytext();
- TokenPersonalizado t = new TokenPersonalizado(yytext(), "FALSE");
- this._existenTokens = true;
- return t;
+ imprimir(yytext(), "FALSE");
 }
 
 {Decremento} {
  ultimaPalabra = yytext();
- TokenPersonalizado t = new TokenPersonalizado(yytext(), "DECREMENTO");
- this._existenTokens = true;
- return t;
+ imprimir(yytext(), "DECREMENTO");
 }
 
 {Incremento} {
  ultimaPalabra = yytext();
- TokenPersonalizado t = new TokenPersonalizado(yytext(), "INCREMENTO");
- this._existenTokens = true;
- return t;
-}
-
-{Clase} {
- if(ultimaPalabra.equals("public class")){
- 	ultimaPalabra = yytext();
- 	TokenPersonalizado t = new TokenPersonalizado(yytext(), "CLASE");
- 	 this._existenTokens = true;
- 	return t;
- }else{
- 	ultimaPalabra = yytext();
- 	TokenPersonalizado t = new TokenPersonalizado(yytext(), "VARIABLE");
- 	 this._existenTokens = true;
- 	return t;
- }
+ imprimir(yytext(), "INCREMENTO");
 }
 
 {Main} {
  ultimaPalabra = yytext();
- TokenPersonalizado t = new TokenPersonalizado(yytext(), "MAIN");
- this._existenTokens = true;
- return t;
+ imprimir(yytext(), "MAIN");
 }
 {Metodo} {
-	if(ultimaPalabra.equals("public static void") || ultimaPalabra.equals("public static int") || ultimaPalabra.equals("public static boolean")){
- 	TokenPersonalizado t = new TokenPersonalizado(yytext(), "METODO");
- 	 this._existenTokens = true;
- 	return t;
+ if(ultimaPalabra.equals("public static void") || ultimaPalabra.equals("public static int") || ultimaPalabra.equals("public static boolean")){
+ 	ultimaPalabra = yytext();
+	imprimir(yytext(), "METODO");
  }else{
  	ultimaPalabra = yytext();
- 	TokenPersonalizado t = new TokenPersonalizado(yytext(), "LLAMADA A METODO");
- 	 this._existenTokens = true;
- 	return t;
+ 	imprimir(yytext(), "LLAMADA A MÉTODO");
  }
 }
 {Variable} {
- ultimaPalabra = yytext();
- TokenPersonalizado t = new TokenPersonalizado(yytext(), "VARIABLE");
- this._existenTokens = true;
- return t;
+ if(ultimaPalabra.equals("public class")){
+ 	ultimaPalabra = yytext();
+ 	imprimir(yytext(), "CLASE");
+ }else{
+ 	ultimaPalabra = yytext();
+ 	imprimir(yytext(), "VARIABLE");
+ }
 }
 
 
