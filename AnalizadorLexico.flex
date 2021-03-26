@@ -7,28 +7,14 @@
 %{
  
  /* Código personalizado */
- 
- // Se agregó una propiedad para verificar si existen tokens pendientes
- private boolean _existenTokens = false;
+ // Variable utilizada para guardar la/las última/últimas palabras reconocidas y ayudar a reconocer expresiones 
  public String ultimaPalabra = "";
 
+ // Método para realizar una impresión rápida con el formato solicitado
  public void imprimir(String lexema, String token){
 	 System.out.println("Nombre léxico: " + token + " => cadena reconocida: " + lexema + ".");
  }
-	
 %}
- 
-%init{
- /* Código que se ejecutará en el constructor de la clase */
-
-%init}
- 
-%eof{
- 
- /* Código a ejecutar al finalizar el análisis, en este caso cambiaremos el valor de una variable bandera */
- this._existenTokens = false;
- 
-%eof}
  
 /* Inicio de Expresiones regulares */
  Numero = [0-9]+
@@ -206,22 +192,3 @@
  	imprimir(yytext(), "VARIABLE");
  }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
