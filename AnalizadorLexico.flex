@@ -12,7 +12,7 @@
 
  // Método para realizar una impresión rápida con el formato solicitado
  public void imprimir(String lexema, String token){
-	 System.out.printlntoken + " => " + lexema);
+	 System.out.println(token + " => " + lexema);
  }
 %}
  
@@ -59,7 +59,7 @@
 
 {SaltoDeLinea} {
  ultimaPalabra = yytext();
- imprimir(yytext(), "NUEVA_LINEA");
+ imprimir("\\n", "NUEVA_LINEA");
 }
 
 {Asignacion} {
