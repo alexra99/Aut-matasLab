@@ -4,9 +4,9 @@ import java.io;
 parser code {:
 	public static void main (String args[]) throws Exception{
 		FileInputStream f = new FileInputStream(args[0]);
-		DataInputStream e = new DataInputStream(f);
+		DataInputStream r = new DataInputStream(f);
 		try{
-			new parser(new Yylex(e)).parse();
+			new parser(new Yylex(r)).parse();
 		}
 		catch (Exception e){
 			System.out.println("Análisis incorrecto");
@@ -16,17 +16,15 @@ parser code {:
 	}
 :}
 
-terminal Numero, Entero, Boolean, Retorno, NoRetorno, Variable, SaltoDeLinea, Asignacion, Puntuacion, Bucle, Suma, Resta, Por, Entre, Relacional, Logica, Espacio, Parentesis, Llave, Verdadero, Falso, Main, Public, Static, Class;
+terminal NUMERO, ENTERO, BOOLEAN, RETORNO, NORETORNO, VARIABLE, SALTODELINEA, ASIGNACION, PUNTUACION, BUCLE, SUMA, RESTA, POR, ENTRE, RELACIONAL, LOGICA, ESPACIO, PARENTESIS, LLAVE, VERDADERO, FALSO, MAIN, PUBLIC, STATIC, CLASS;
 non terminal incremento, decremento, metodo, clase, principal, llamada;
 
-precedence left Suma, Resta;
-precedence left Por, Entre;
+precedence left SUMA, RESTA;
+precedence left POR, ENTRE;
 
-start with clase;
-
-incremento ::= Variable Suma Suma;
-decremento ::= Variable Resta Resta;
-metodo ::= Public Static Entero | Public Static Boolean | Public Static NoRetorno; 
-clase ::= Public Class;
-principal ::= Public Static Class Main;
-llamada ::= Variable Asignacion Parentesis;
+incremento ::= VARIABLE SUMA SUMA;
+decremento ::= VARIABLE RESTA RESTA;
+metodo ::= PUBLIC STATIC ENTERO VARIABLE | PUBLIC STATIC BOOLEAN VARIABLE | PUBLIC STATIC NORETORNO VARIABLE; 
+clase ::= PUBLIC CLASS;
+principal ::= PUBLIC STATIC CLASS MAIN;
+llamada ::= VARIABLE ASIGNACION PARENTESIS;
