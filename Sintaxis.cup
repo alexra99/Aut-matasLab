@@ -1,0 +1,32 @@
+import java_cup.runtime.*;
+import java.io;
+
+parser code {:
+	public static void main (String args[]) throws Exception{
+		FileInputStream f = new FileInputStream(args[0]);
+		DataInputStream e = new DataInputStream(f);
+		try{
+			new parser(new Yylex(e)).parse();
+		}
+		catch (Exception e){
+			System.out.println("Análisis incorrecto");
+			System.exit(1);
+		}
+		System.out.println("Análisis correcto");
+	}
+:}
+
+terminal Numero, Entero, Boolean, Retorno, NoRetorno, Variable, SaltoDeLinea, Asignacion, Puntuacion, Bucle, Suma, Resta, Por, Entre, Relacional, Logica, Espacio, Parentesis, Llave, Verdadero, Falso, Main, Public, Static, Class;
+non terminal incremento, decremento, metodo, clase, principal, llamada;
+
+precedence left Suma, Resta;
+precedence left Por, Entre;
+
+start with clase;
+
+incremento ::= Variable Suma Suma;
+decremento ::= Variable Resta Resta;
+metodo ::= Public Static Entero | Public Static Boolean | public Static NoRetorno; 
+clase ::= Public Class;
+principal ::= Public Static Class Main;
+llamada ::= Variable Asignacion Parentesis;
