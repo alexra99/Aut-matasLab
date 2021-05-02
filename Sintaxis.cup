@@ -26,7 +26,7 @@ start with clase;
 
 incremento ::= Variable Suma Suma;
 decremento ::= Variable Resta Resta;
-metodo ::= Public Static Entero | Public Static Boolean | public Static NoRetorno; 
+metodo ::= Public Static Entero | Public Static Boolean | Public Static NoRetorno; 
 clase ::= Public Class;
 principal ::= Public Static Class Main;
 llamada ::= Variable Asignacion Parentesis;
