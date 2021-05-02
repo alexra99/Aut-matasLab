@@ -7,41 +7,33 @@ import java_cup.runtime.Symbol;
 %full
 %line
 %char 
-%{
- private Symbol symbol (int type, object value){
- 	return new Symbol (type, yyline, yycolumn, value);
- }
- private Symbol symbol (int type){
- 	return new symbol (type, yyline, yycolumn);
- }
-%}
 
 /* Inicio de Expresiones regulares */
- Numero = [0-9]+
- Entero = "int"
- Boolean = "boolean"
- Retorno = "return"
- NoRetorno = "void"
- Variable = [a-zA-Z] [a-zA-Z0-9_]*
- SaltoDeLinea = \n|\r|\r\n
- Asignacion = "="
- Puntuacion = ";" | "," |"."
- Bucle = "for" | "while" | "do"
- Suma = "+"
- Resta = "-"
- Por = "*"
- Entre = "/"
- Relacional = "<"|"<="|">"|">="|"=="|"!="
- Logica = "&&"|"||"|"!"
- Espacio = " "
- Parentesis = "(" | ")"
- Llave = "{" | "}"
- Verdadero = "True"
- Falso = "False"
- Main = "main("
- Public = "public"
- Static = "static"
- Class = "class"
+ NUMERO = [0-9]+
+ ENTERO = "int"
+ BOOLEAN = "boolean"
+ RETORNO = "return"
+ NORETORNO = "void"
+ VARIABLE = [a-zA-Z] [a-zA-Z0-9_]*
+ SALTODELINEA = \n|\r|\r\n
+ ASIGNACION = "="
+ PUNTUACION = ";" | "," |"."
+ BUCLE = "for" | "while" | "do"
+ SUMA = "+"
+ RESTA = "-"
+ POR = "*"
+ ENTRE = "/"
+ RELACIONAL = "<"|"<="|">"|">="|"=="|"!="
+ LOGICA = "&&"|"||"|"!"
+ ESPACIO = " "
+ PARENTESIS = "(" | ")"
+ LLAVE = "{" | "}"
+ VERDADERO = "True"
+ FALSO = "False"
+ MAIN = "main("
+ PUBLIC = "public"
+ STATIC = "static"
+ CLASS = "class"
 
 /* Finaliza expresiones regulares */
 
@@ -52,100 +44,52 @@ import java_cup.runtime.Symbol;
 
 // Cada regla está formada por una {expresión} espacio {código}
 
-{Numero} {
- return new Symbol (sym.Numero, yychar, yyline, yytext());
-}
+{NUMERO} { return new Symbol(sym.NUMERO, yytext()); }
 
-{SaltoDeLinea} {
-// Ignorar cuando se ingrese un salto de línea
-}
+{SALTO} { }
 
-{Asignacion} {
- return new Symbol (sym.Asignacion, yychar, yyline, yytext());
-}
+{ASIGNACION} { return new Symbol(sym.ASIGNACION); }
 
-{Puntuacion} {
- return new Symbol (sym.Puntuacion, yychar, yyline, yytext());
-}
+{PUNTUACION} { return new Symbol(sym.PUNTUACION, yytext()); }
 
-{Bucle} {
- return new Symbol (sym.Bucle, yychar, yyline, yytext());
-}
+{BUCLE} { return new Symbol(sym.BUCLE, yytext()); }
 
-{Suma} {
- return new Symbol (sym.Suma, yychar, yyline, yytext());
-}
+{SUMA} { return new Symbol(sym.SUMA); }
 
-{Resta} {
- return new Symbol (sym.Resta, yychar, yyline, yytext());
-}
-{Por} {
- return new Symbol (sym.Por, yychar, yyline, yytext());
-}
-{Entre} {
- return new Symbol (sym.Entre, yychar, yyline, yytext());
-}
+{RESTA} { return new Symbol(sym.RESTA); }
 
-{Logica} {
- return new Symbol (sym.Logica, yychar, yyline, yytext());
-}
+{POR} { return new Symbol(sym.POR); }
 
-{Relacional} {
- return new Symbol (sym.Relacional, yychar, yyline, yytext());
-}
+{ENTRE} { return new Symbol(sym.ENTRE); }
 
-{Espacio} {
- // Ignorar cuando se ingrese un espacio
-}
+{LOGICA} { return new Symbol(sym.LOGICA, yytext()); }
 
-{Entero} {
- return new Symbol (sym.Entero, yychar, yyline, yytext());
-}
+{RELACIONAL} { return new Symbol(sym.RELACIONAL, yytext());}
 
-{Boolean} {
- return new Symbol (sym.Boolean, yychar, yyline, yytext());
-}
+{ESPACIO} { }
 
-{Retorno} {
- return new Symbol (sym.Retorno, yychar, yyline, yytext());
-}
+{ENTERO} { return new Symbol(sym.ENTERO); }
 
-{NoRetorno} {
- return new Symbol (sym.NoRetorno, yychar, yyline, yytext());
-}
+{BOOLEAN} { return new Symbol(sym.BOOLEAN); }
 
-{Class} {
- return new Symbol (sym.Class, yychar, yyline, yytext());                                                                                         
-}
+{RETORNO} { return new Symbol(sym.RETORNO); }
 
-{Static} {
- return new Symbol (sym.Static, yychar, yyline, yytext());
-}
+{NORETORNO} { return new Symbol(sym.NORETORNO); }
 
-{Public} {
- return new Symbol (sym.Public, yychar, yyline, yytext());
-}
+{CLASS} { return new Symbol(sym.CLASS); }
 
-{Parentesis} {
- return new Symbol (sym.Parentesis, yychar, yyline, yytext());
-}
+{STATIC} { return new Symbol(sym.STATIC); }
 
-{Llave} {
- return new Symbol (sym.Llave, yychar, yyline, yytext());
-}
+{PUBLIC} { return new Symbol(sym.PUBLIC); }
 
-{Verdadero} {
- return new Symbol (sym.Verdadero, yychar, yyline, yytext());
-}
+{PARENTESIS} { return new Symbol(sym.PARENTESIS, yytext()); }
 
-{Falso} {
- return new Symbol (sym.Falso, yychar, yyline, yytext());
-}
+{LLAVE} { return new Symbol(sym.LLAVE, yytext()); }
 
-{Main} {
- return new Symbol (sym.Main, yychar, yyline, yytext());
-}
+{VERDADERO} { return new Symbol(sym.VERDADERO); }
 
-{Variable} {
- return new Symbol (sym.Variable, yychar, yyline, yytext());
-}
+{FALSO} { return new Symbol(sym.FALSO); }
+
+{MAIN} { return new Symbol(sym.MAIN); }
+
+{VARIABLE} { return new Symbol(sym.VARIABLE, yytext()); }
