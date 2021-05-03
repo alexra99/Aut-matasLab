@@ -48,19 +48,19 @@ import java_cup.runtime.Symbol;
 
 {SALTO} { }
 
-{ASIGNACION} { return new Symbol(sym.ASIGNACION); }
+{ASIGNACION} { return new Symbol(sym.ASIGNACION, yytext()); }
 
 {PUNTUACION} { return new Symbol(sym.PUNTUACION, yytext()); }
 
 {BUCLE} { return new Symbol(sym.BUCLE, yytext()); }
 
-{SUMA} { return new Symbol(sym.SUMA); }
+{SUMA} { return new Symbol(sym.SUMA, yytext()); }
 
-{RESTA} { return new Symbol(sym.RESTA); }
+{RESTA} { return new Symbol(sym.RESTA, yytext()); }
 
-{POR} { return new Symbol(sym.POR); }
+{POR} { return new Symbol(sym.POR, yytext()); }
 
-{ENTRE} { return new Symbol(sym.ENTRE); }
+{ENTRE} { return new Symbol(sym.ENTRE, yytext()); }
 
 {LOGICA} { return new Symbol(sym.LOGICA, yytext()); }
 
@@ -68,28 +68,28 @@ import java_cup.runtime.Symbol;
 
 {ESPACIO} { }
 
-{ENTERO} { return new Symbol(sym.ENTERO); }
+{ENTERO} { return new Symbol(sym.ENTERO, yytext()); }
 
-{BOOLEAN} { return new Symbol(sym.BOOLEAN); }
+{BOOLEAN} { return new Symbol(sym.BOOLEAN, yytext()); }
 
-{RETORNO} { return new Symbol(sym.RETORNO); }
+{RETORNO} { return new Symbol(sym.RETORNO, yytext()); }
 
-{NORETORNO} { return new Symbol(sym.NORETORNO); }
+{NORETORNO} { return new Symbol(sym.NORETORNO, yytext()); }
 
-{CLASS} { return new Symbol(sym.CLASS); }
+{CLASS} { return new Symbol(sym.CLASS, yytext()); }
 
-{STATIC} { return new Symbol(sym.STATIC); }
+{STATIC} { return new Symbol(sym.STATIC, yytext()); }
 
-{PUBLIC} { return new Symbol(sym.PUBLIC); }
+{PUBLIC} { return new Symbol(sym.PUBLIC, yytext()); }
 
 {PARENTESIS} { return new Symbol(sym.PARENTESIS, yytext()); }
 
 {LLAVE} { return new Symbol(sym.LLAVE, yytext()); }
 
-{VERDADERO} { return new Symbol(sym.VERDADERO); }
+{VERDADERO} { return new Symbol(sym.VERDADERO, yytext()); }
 
-{FALSO} { return new Symbol(sym.FALSO); }
+{FALSO} { return new Symbol(sym.FALSO, yytext()); }
 
-{MAIN} { return new Symbol(sym.MAIN); }
+{MAIN} { return new Symbol(sym.MAIN, yytext()); }
 
 {VARIABLE} { return new Symbol(sym.VARIABLE, yytext()); }
