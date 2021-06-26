@@ -17,8 +17,13 @@ import java_cup.runtime.Symbol;
  VARIABLE = [a-zA-Z] [a-zA-Z0-9_]*
  SALTODELINEA = \n|\r|\r\n
  ASIGNACION = "="
+ INCREMENTO = VARIABLE "++"
+ DECREMENTO = VARIABLE "--"
  PUNTUACION = ";" | "," |"."
- BUCLE = "for" | "while" | "do"
+ FOR = "for"
+ WHILE = "while"
+ DO = "do"
+ ASIGNACION = "="
  SUMA = "+"
  RESTA = "-"
  POR = "*"
@@ -26,11 +31,12 @@ import java_cup.runtime.Symbol;
  RELACIONAL = "<"|"<="|">"|">="|"=="|"!="
  LOGICA = "&&"|"||"|"!"
  ESPACIO = " "
- PARENTESIS = "(" | ")"
- LLAVE = "{" | "}"
- VERDADERO = "True"
- FALSO = "False"
- MAIN = "main("
+ PARENTESISABIERTO = "(" 
+ PARENTESISCERRADO = ")"
+ LLAVEABIERTA = "{"
+ LLAVECERRADA = "}"
+ VERDAFALSO = "true" | "false"
+ MAIN = "main()"
  PUBLIC = "public"
  STATIC = "static"
  CLASS = "class"
@@ -43,6 +49,9 @@ import java_cup.runtime.Symbol;
 /* Inicia sección de reglas */
 
 // Cada regla está formada por una {expresión} espacio {código}
+{INCREMENTO} { return new Symbol(sym.INCREMENTO, yytext()); }
+
+{DECREMENTO} { return new Symbol(sym.DECREMENTO, yytext()); }
 
 {NUMERO} { return new Symbol(sym.NUMERO, yytext()); }
 
@@ -52,7 +61,13 @@ import java_cup.runtime.Symbol;
 
 {PUNTUACION} { return new Symbol(sym.PUNTUACION, yytext()); }
 
-{BUCLE} { return new Symbol(sym.BUCLE, yytext()); }
+{FOR} { return new Symbol(sym.FOR, yytext()); }
+
+{WHILE} { return new Symbol(sym.WHILE, yytext()); }
+
+{DO} { return new Symbol(sym.DO, yytext()); }
+
+{ASIGNACION} { return new Symbol(sym.ASIGNACION, yytext()); }
 
 {SUMA} { return new Symbol(sym.SUMA, yytext()); }
 
@@ -61,6 +76,8 @@ import java_cup.runtime.Symbol;
 {POR} { return new Symbol(sym.POR, yytext()); }
 
 {ENTRE} { return new Symbol(sym.ENTRE, yytext()); }
+
+{VERDAFALSO} { return new Symbol(sym.VERDAFALSO, yytext()); }
 
 {LOGICA} { return new Symbol(sym.LOGICA, yytext()); }
 
@@ -82,13 +99,13 @@ import java_cup.runtime.Symbol;
 
 {PUBLIC} { return new Symbol(sym.PUBLIC, yytext()); }
 
-{PARENTESIS} { return new Symbol(sym.PARENTESIS, yytext()); }
+{PARENTESISABIERTO} { return new Symbol(sym.PARENTESISABIERTO, yytext()); }
 
-{LLAVE} { return new Symbol(sym.LLAVE, yytext()); }
+{PARENTESISCERRADO} { return new Symbol(sym.PARENTESISCERRADO, yytext()); }
 
-{VERDADERO} { return new Symbol(sym.VERDADERO, yytext()); }
+{LLAVEABIERTA} { return new Symbol(sym.LLAVEABIERTA, yytext()); }
 
-{FALSO} { return new Symbol(sym.FALSO, yytext()); }
+{LLAVECERRADA} { return new Symbol(sym.LLAVECERRADA, yytext()); }
 
 {MAIN} { return new Symbol(sym.MAIN, yytext()); }
 
