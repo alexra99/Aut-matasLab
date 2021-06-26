@@ -16,15 +16,75 @@ parser code {:
 	}
 :}
 
-terminal NUMERO, ENTERO, BOOLEAN, RETORNO, NORETORNO, VARIABLE, SALTODELINEA, ASIGNACION, PUNTUACION, BUCLE, SUMA, RESTA, POR, ENTRE, RELACIONAL, LOGICA, ESPACIO, PARENTESIS, LLAVE, VERDADERO, FALSO, MAIN, PUBLIC, STATIC, CLASS;
-non terminal incremento, decremento, metodo, clase, principal, llamada;
+terminal 	NUMERO, ENTERO, BOOLEAN, RETORNO, NORETORNO, 
+		VARIABLE, SALTODELINEA, ASIGNACION, PUNTUACION, BUCLE, 
+		SUMA, RESTA, POR, ENTRE, RELACIONAL, 
+		LOGICA, ESPACIO, PARENTESIS, LLAVE, VERDAFALSO,
+		MAIN, PUBLIC, STATIC, CLASS;
+
+non terminal 	lambda, clase, dentroclase, funciones, argumentos, 
+		argumentosaux, resto, restoaux, declaracion, asignacion, 
+		llamadafuncion, argumentosllamada, buclefor, buclewhile, bucledowhile, 
+		retorno, expresionlogica, expresionnumerica;
 
 precedence left SUMA, RESTA;
 precedence left POR, ENTRE;
 
-incremento ::= VARIABLE SUMA SUMA;
-decremento ::= VARIABLE RESTA RESTA;
-metodo ::= PUBLIC STATIC ENTERO VARIABLE | PUBLIC STATIC BOOLEAN VARIABLE | PUBLIC STATIC NORETORNO VARIABLE; 
-clase ::= PUBLIC CLASS;
-principal ::= PUBLIC STATIC NORETORNO MAIN;
-llamada ::= VARIABLE PARENTESIS;
+
+lambda ::=  ;
+
+
+clase ::= PUBLIC CLASS VARIABLE LLAVEABIERTA dentroclase LLAVECERRADA;
+dentroclase ::= PUBLIC STATIC VOID MAIN LLAVEABIERTA resto LLAVECERRADA funciones;
+
+funciones ::= lambda 
+	| PUBLIC STATIC declaracion argumentos LLAVEABIERTA resto LLAVECERRADA funciones
+	| PUBLIC STATIC VOID VARIABLE argumentos LLAVEABIERTA resto LLAVECERRADA funciones;
+argumentos ::= PARENTESISABIERTO PARENTESISCERRADO
+	| PARENTESISABIERTO argumentosaux PARENTESISCERRADO;
+argumentosaux ::= declaracion COMA argumentosaux 
+	| declaracion;
+
+
+resto ::= lambda 
+	| restoaux PUNTOYCOMA resto
+	| buclefor resto
+	| buclewhile resto;
+restoaux ::= declaracion 
+	| INCREMENTO
+	| DECREMENTO
+	| asignacion 
+	| llamadafuncion
+	| bucledowhile
+	| retorno;
+
+
+declaracion ::= BOOLEAN VARIABLE 
+	| ENTERO VARIABLE;
+
+asignacion ::= VARIABLE ASIGNACION expresionlogica
+	| VARIABLE ASIGNACION expresionnumerica
+	| VARIABLE ASIGNACION NUMERO
+	| VARIABLE ASIGNACION VERDAFALSO
+	| VARIABLE ASIGNACION VARIABLE
+	| VARIABLE ASIGNACION llamadafuncion;
+
+llamadafuncion ::= VARIABLE PARENTESISABIERTO argumentosllamada PARENTESISCERRADO;
+argumentosllamada ::= VARIABLE | VARIABLE COMA argumentosllamada;
+
+buclefor ::= FOR PARENTESISABIERTO ENTERO VARIABLE ASIGNACION NUMERO PUNTOYCOMA expresionlogica PUNTOYCOMA asigfor PARENTESISCERRADO LLAVEABIERTA resto LLAVECERRADA;
+asigfor ::= lambda | INCREMENTO | DECREMENTO | asignacion;
+
+buclewhile ::= WHILE PARENTESISABIERTO expresionlogica PARENTESISCERRADO LLAVEABIERTA resto LLAVECERRADA;
+
+bucledowhile ::= DO LLAVEABIERTA resto LLAVECERRADA WHILE PARENTESISABIERTO expresionlogica PARENTESISCERRADO;
+
+retorno ::= RETORNO NUMERO
+	| RETORNO VERDAFALSO
+	| RETORNO expresionnumerica
+	| RETORNO expresionlogica
+	| RETORNO VARIABLE
+
+
+expresionlogica ::=
+expresionnumerica ::=
