@@ -55,7 +55,7 @@ import java_cup.runtime.Symbol;
 
 {NUMERO} { return new Symbol(sym.NUMERO, yytext()); }
 
-{SALTO} { }
+{SALTODELINEA} { return new Symbol(sym.SALTODELINEA, yytext()); }
 
 {ASIGNACION} { return new Symbol(sym.ASIGNACION, yytext()); }
 

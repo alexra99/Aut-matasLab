@@ -86,7 +86,21 @@ retorno ::= RETORNO NUMERO
 	| RETORNO VARIABLE
 
 
-expresionlogica ::=
+expresionlogica ::= VARIABLE LOGICA VARIABLES
+	| VARIABLE LOGICA NUMERO
+	| NUMERO LOGICA VARIABLE
+	| NUMERO LOGICA NUMERO
+	| expresionnumerica LOGICA NUMERO
+	| expresionnumerica LOGICA VARIABLE
+	| expresionnumerica LOGICA expresionnumerica
+	| NUMERO LOGICA expresionnumerica
+	| VARIABLE LOGICA expresionnumerica
+	| expresionnumerica RELACIONAL NUMERO
+	| expresionnumerica RELACIONAL VARIABLE
+	| expresionnumerica RELACIONAL expresionnumerica
+	| NUMERO RELACIONAL expresionnumerica
+	| VARIABLE RELACIONAL expresionnumerica
+
 expresionnumerica ::= NUMERO SUMA NUMERO
 	| NUMERO SUMA VARIABLE
 	| VARIABLE SUMA NUMERO

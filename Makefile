@@ -1,14 +1,14 @@
 input = "prueba.txt" 
 
 compile_and_run:
-	if [-a AnalizadorLexico.java]; then rm AnalizadorLexico.java; fi
-	jflex AnalizadorLexico.flex
-	javac AnalizadorLexico.java
-	java  AnalizadorLexico $(input)
+	if [-a AnalizadorLexicoCup.java]; then rm AnalizadorLexicoCup.java; fi
+	jflex AnalizadorLexicoCup.flex
+	javac AnalizadorLexicoCup.java
+	java  AnalizadorLexicoCup $(input)
 
 run:
-	java  AnalizadorLexico $(input)
+	java  AnalizadorLexicoCup $(input)
 
 clean:
-	rm AnalizadorLexico.class
-	rm AnalizadorLexico.java
+	rm AnalizadorLexicoCup.class
+	rm AnalizadorLexicoCup.java
