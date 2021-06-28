@@ -1,33 +1,27 @@
-/* Secci√≥n de declaraciones de JFlex */
+/* SecciÛn de declaraciones de JFlex */
 import java_cup.runtime.Symbol;
 %%
-%class AnalizadorLexicoCup
-%type java_cup.runtime.Symbol
 %cup
-%full
-%line
-%char 
+%8bit
 
 /* Inicio de Expresiones regulares */
  NUMERO = [0-9]+
  ENTERO = "int"
  BOOLEAN = "boolean"
  RETORNO = "return"
- NORETORNO = "void"
+ VOID = "void"
  VARIABLE = [a-zA-Z] [a-zA-Z0-9_]*
+ FUNCION = [a-zA-Z] [a-zA-Z0-9_]* "("
  SALTODELINEA = \n|\r|\r\n
  ASIGNACION = "="
- INCREMENTO = VARIABLE "++"
- DECREMENTO = VARIABLE "--"
- PUNTUACION = ";" | "," |"."
+ INCDEC = [a-zA-Z] [a-zA-Z0-9_]* "++" | [a-zA-Z] [a-zA-Z0-9_]* "--"
+ PUNTOYCOMA = ";"
+ COMA = ","
  FOR = "for"
  WHILE = "while"
  DO = "do"
  ASIGNACION = "="
- SUMA = "+"
- RESTA = "-"
- POR = "*"
- ENTRE = "/"
+ ARITMETICA = "+"|"-"|"*"|"/"
  RELACIONAL = "<"|"<="|">"|">="|"=="|"!="
  LOGICA = "&&"|"||"|"!"
  ESPACIO = " "
@@ -36,7 +30,6 @@ import java_cup.runtime.Symbol;
  LLAVEABIERTA = "{"
  LLAVECERRADA = "}"
  VERDAFALSO = "true" | "false"
- MAIN = "main()"
  PUBLIC = "public"
  STATIC = "static"
  CLASS = "class"
@@ -44,22 +37,22 @@ import java_cup.runtime.Symbol;
 /* Finaliza expresiones regulares */
 
 %%
-/* Finaliza la secci√≥n de declaraciones de JFlex */
+/* Finaliza la secciÛn de declaraciones de JFlex */
 
-/* Inicia secci√≥n de reglas */
+/* Inicia secciÛn de reglas */
 
-// Cada regla est√° formada por una {expresi√≥n} espacio {c√≥digo}
-{INCREMENTO} { return new Symbol(sym.INCREMENTO, yytext()); }
-
-{DECREMENTO} { return new Symbol(sym.DECREMENTO, yytext()); }
+// Cada regla est· formada por una {expresiÛn} espacio {cÛdigo}
+{INCDEC} { return new Symbol(sym.INCDEC, yytext()); }
 
 {NUMERO} { return new Symbol(sym.NUMERO, yytext()); }
 
-{SALTODELINEA} { return new Symbol(sym.SALTODELINEA, yytext()); }
+{SALTODELINEA} { }
 
 {ASIGNACION} { return new Symbol(sym.ASIGNACION, yytext()); }
 
-{PUNTUACION} { return new Symbol(sym.PUNTUACION, yytext()); }
+{PUNTOYCOMA} { return new Symbol(sym.PUNTOYCOMA, yytext()); }
+
+{COMA} {return new Symbol(sym.COMA, yytext()); }
 
 {FOR} { return new Symbol(sym.FOR, yytext()); }
 
@@ -69,13 +62,7 @@ import java_cup.runtime.Symbol;
 
 {ASIGNACION} { return new Symbol(sym.ASIGNACION, yytext()); }
 
-{SUMA} { return new Symbol(sym.SUMA, yytext()); }
-
-{RESTA} { return new Symbol(sym.RESTA, yytext()); }
-
-{POR} { return new Symbol(sym.POR, yytext()); }
-
-{ENTRE} { return new Symbol(sym.ENTRE, yytext()); }
+{ARITMETICA} { return new Symbol(sym.ARITMETICA, yytext()); }
 
 {VERDAFALSO} { return new Symbol(sym.VERDAFALSO, yytext()); }
 
@@ -91,7 +78,7 @@ import java_cup.runtime.Symbol;
 
 {RETORNO} { return new Symbol(sym.RETORNO, yytext()); }
 
-{NORETORNO} { return new Symbol(sym.NORETORNO, yytext()); }
+{VOID} { return new Symbol(sym.VOID, yytext()); }
 
 {CLASS} { return new Symbol(sym.CLASS, yytext()); }
 
@@ -107,6 +94,6 @@ import java_cup.runtime.Symbol;
 
 {LLAVECERRADA} { return new Symbol(sym.LLAVECERRADA, yytext()); }
 
-{MAIN} { return new Symbol(sym.MAIN, yytext()); }
+{FUNCION} { return new Symbol(sym.FUNCION, yytext()); }
 
 {VARIABLE} { return new Symbol(sym.VARIABLE, yytext()); }

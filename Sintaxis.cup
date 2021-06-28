@@ -1,58 +1,56 @@
 import java_cup.runtime.*;
-import java.io;
+import java.io.*;
 
 parser code {:
-	public static void main (String args[]) throws Exception{
-		FileInputStream f = new FileInputStream(args[0]);
-		DataInputStream r = new DataInputStream(f);
+	public static void main(String args[]) throws Exception {
+
+ 		FileInputStream stream = new java.io.FileInputStream(args[0]);
+       		Reader reader = new java.io.InputStreamReader(stream);
+
 		try{
-			new parser(new Yylex(r)).parse();
+			new parser(new Yylex(reader)).parse();
 		}
-		catch (Exception e){
-			System.out.println("Análisis incorrecto");
+		catch ( Exception e) {
+			System.out.println("Analisis INCORRECTO !!");
 			System.exit(1);
 		}
-		System.out.println("Análisis correcto");
-	}
+		System.out.println("Analisis Correcto ");
+	
+		}
 :}
 
-terminal 	NUMERO, ENTERO, BOOLEAN, RETORNO, NORETORNO, 
-		VARIABLE, SALTODELINEA, ASIGNACION, PUNTUACION, BUCLE, 
-		SUMA, RESTA, POR, ENTRE, RELACIONAL, 
-		LOGICA, ESPACIO, PARENTESIS, LLAVE, VERDAFALSO,
-		MAIN, PUBLIC, STATIC, CLASS;
+terminal 	PUBLIC, CLASS, STATIC, VARIABLE, NUMERO, 
+			VOID, ENTERO, BOOLEAN, RETORNO, ASIGNACION,
+			PUNTOYCOMA, COMA, FOR, WHILE, DO,
+			LLAVEABIERTA, LLAVECERRADA, PARENTESISABIERTO, PARENTESISCERRADO, INCDEC,
+			ARITMETICA, RELACIONAL, LOGICA, VERDAFALSO, FUNCION;
+
 
 non terminal 	lambda, clase, dentroclase, funciones, argumentos, 
-		argumentosaux, resto, restoaux, declaracion, asignacion, 
-		llamadafuncion, argumentosllamada, buclefor, buclewhile, bucledowhile, 
-		retorno, expresionlogica, expresionnumerica;
-
-precedence left SUMA, RESTA;
-precedence left POR, ENTRE;
+				argumentosaux, resto, restoaux, declaracion, asignacion, 
+				llamadafuncion, argumentosllamada, buclefor, buclewhile, bucledowhile, 
+				retorno, expresionlogica, elaux, expresionnumerica, enaux,
+				declaracionasignacion;
 
 
-lambda ::=  ;
-
-
-clase ::= PUBLIC CLASS VARIABLE LLAVEABIERTA dentroclase LLAVECERRADA;
-dentroclase ::= PUBLIC STATIC VOID MAIN LLAVEABIERTA resto LLAVECERRADA funciones;
+clase ::= PUBLIC CLASS VARIABLE LLAVEABIERTA funciones LLAVECERRADA;
 
 funciones ::= lambda 
-	| PUBLIC STATIC declaracion argumentos LLAVEABIERTA resto LLAVECERRADA funciones
-	| PUBLIC STATIC VOID VARIABLE argumentos LLAVEABIERTA resto LLAVECERRADA funciones;
-argumentos ::= PARENTESISABIERTO PARENTESISCERRADO
-	| PARENTESISABIERTO argumentosaux PARENTESISCERRADO;
+	| PUBLIC STATIC ENTERO FUNCION argumentos LLAVEABIERTA resto LLAVECERRADA funciones
+	| PUBLIC STATIC BOOLEAN FUNCION argumentos LLAVEABIERTA resto LLAVECERRADA funciones
+	| PUBLIC STATIC VOID FUNCION argumentos LLAVEABIERTA resto LLAVECERRADA funciones;
+argumentos ::= PARENTESISCERRADO
+	| argumentosaux PARENTESISCERRADO;
 argumentosaux ::= declaracion COMA argumentosaux 
 	| declaracion;
 
 
-resto ::= lambda 
+resto ::= lambda
 	| restoaux PUNTOYCOMA resto
 	| buclefor resto
 	| buclewhile resto;
-restoaux ::= declaracion 
-	| INCREMENTO
-	| DECREMENTO
+restoaux ::= declaracionasignacion
+	| INCDEC
 	| asignacion 
 	| llamadafuncion
 	| bucledowhile
@@ -61,6 +59,10 @@ restoaux ::= declaracion
 
 declaracion ::= BOOLEAN VARIABLE 
 	| ENTERO VARIABLE;
+	
+declaracionasignacion ::= declaracion
+	| BOOLEAN asignacion
+	| ENTERO asignacion;
 
 asignacion ::= VARIABLE ASIGNACION expresionlogica
 	| VARIABLE ASIGNACION expresionnumerica
@@ -69,11 +71,15 @@ asignacion ::= VARIABLE ASIGNACION expresionlogica
 	| VARIABLE ASIGNACION VARIABLE
 	| VARIABLE ASIGNACION llamadafuncion;
 
-llamadafuncion ::= VARIABLE PARENTESISABIERTO argumentosllamada PARENTESISCERRADO;
-argumentosllamada ::= VARIABLE | VARIABLE COMA argumentosllamada;
+llamadafuncion ::= FUNCION argumentosllamada PARENTESISCERRADO;
+argumentosllamada ::= VARIABLE 
+	| VARIABLE COMA argumentosllamada
+	| NUMERO
+	| NUMERO COMA argumentosllamada
+	| VERDAFALSO
+	| VERDAFALSO argumentosllamada;
 
-buclefor ::= FOR PARENTESISABIERTO ENTERO VARIABLE ASIGNACION NUMERO PUNTOYCOMA expresionlogica PUNTOYCOMA asigfor PARENTESISCERRADO LLAVEABIERTA resto LLAVECERRADA;
-asigfor ::= lambda | INCREMENTO | DECREMENTO | asignacion;
+buclefor ::= FOR PARENTESISABIERTO declaracionasignacion PUNTOYCOMA expresionlogica PUNTOYCOMA INCDEC PARENTESISCERRADO LLAVEABIERTA resto LLAVECERRADA;
 
 buclewhile ::= WHILE PARENTESISABIERTO expresionlogica PARENTESISCERRADO LLAVEABIERTA resto LLAVECERRADA;
 
@@ -83,37 +89,23 @@ retorno ::= RETORNO NUMERO
 	| RETORNO VERDAFALSO
 	| RETORNO expresionnumerica
 	| RETORNO expresionlogica
-	| RETORNO VARIABLE
+	| RETORNO VARIABLE;
 
 
-expresionlogica ::= VARIABLE LOGICA VARIABLES
-	| VARIABLE LOGICA NUMERO
-	| NUMERO LOGICA VARIABLE
-	| NUMERO LOGICA NUMERO
-	| expresionnumerica LOGICA NUMERO
-	| expresionnumerica LOGICA VARIABLE
-	| expresionnumerica LOGICA expresionnumerica
-	| NUMERO LOGICA expresionnumerica
-	| VARIABLE LOGICA expresionnumerica
-	| expresionnumerica RELACIONAL NUMERO
-	| expresionnumerica RELACIONAL VARIABLE
+expresionlogica ::= elaux
+	| elaux LOGICA expresionlogica;
+	
+elaux ::= VERDAFALSO
+	| VARIABLE
 	| expresionnumerica RELACIONAL expresionnumerica
-	| NUMERO RELACIONAL expresionnumerica
-	| VARIABLE RELACIONAL expresionnumerica
+	| PARENTESISABIERTO expresionlogica PARENTESISCERRADO;
 
-expresionnumerica ::= NUMERO SUMA NUMERO
-	| NUMERO SUMA VARIABLE
-	| VARIABLE SUMA NUMERO
-	| VARIABLE SUMA VARIABLE
-	| NUMERO RESTA NUMERO
-	| NUMERO RESTA VARIABLE
-	| VARIABLE RESTA NUMERO
-	| VARIABLE RESTA VARIABLE
-	| NUMERO POR NUMERO
-	| NUMERO POR VARIABLE
-	| VARIABLE POR NUMERO
-	| VARIABLE POR VARIABLE
-	| NUMERO ENTRE NUMERO
-	| NUMERO ENTRE VARIABLE
-	| VARIABLE ENTRE NUMERO
-	| VARIABLE ENTRE VARIABLE
+expresionnumerica ::= enaux
+	| enaux ARITMETICA expresionnumerica;
+
+enaux ::= NUMERO
+	| VARIABLE
+	| PARENTESISABIERTO expresionnumerica PARENTESISCERRADO;
+
+
+lambda ::=  ;
