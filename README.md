@@ -1,2 +1,3 @@
-# REPOSITORIO PARA PROYECTO DE LA ASIGNATURA: TEORÍA DE AUTÓMATAS Y COMPUTACIÓN
-  Analizador léxico de gramáticas realizado con sintaxis jflex y cup.
+# AUTÓMATAS LAB
+  Analizador léxico basado en jflex y cup.
+  Para + info consultar DOC.
